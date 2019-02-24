@@ -1,0 +1,49 @@
+Sub dataStockVolume():
+
+     For Each ws In Worksheets
+        'set an initial variable for holding the ticker name and total stock volume
+        Dim ticker As String
+      
+        Total = 0
+      
+       'Keep track of the location for different names of stocks
+       Dim Summary_Table_Row As Integer
+       Summary_Table_Row = 2
+      
+       'set name for I1 and J1
+       ws.Range("I1").Value = "Ticker"
+       ws.Range("J1").Value = "Total Stock Volume”
+      
+       'determine Lastrow
+       Lastrow = ws.Cells(Rows.Count, 1).End(xlUp).Row
+      
+       'Loop through column A, find different stock names and add stock volume together
+       For i = 2 To Lastrow:
+            'use if condition to compare cells(i, 1).value with cells(i+1, 1).value
+            If ws.Cells(i + 1, 1).Value <> ws.Cells(i, 1).Value Then
+            
+               'set ticker name
+               ticker = ws.Cells(i, 1).Value
+               
+               'Add to stock volume total
+               Total = Total + ws.Range("G" & i).Value
+               
+               'print ticker name
+               ws.Range("I" & Summary_Table_Row).Value = ticker
+               
+               'Print total stock volume
+               ws.Range("J" & Summary_Table_Row).Value = Total
+               
+               'add one to the summary table row
+               Summary_Table_Row = Summary_Table_Row + 1
+               
+               'reset the total stock volume
+               Total = 0
+            Else
+              Total = Total + ws.Range("G" & i).Value
+             
+           End If
+        Next i
+    Next ws
+      
+End Sub
